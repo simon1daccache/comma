@@ -6,6 +6,7 @@
 #include <vector>
 using namespace std;
 
+
 vector<bool> comma, period;
 vector<string> text;
 map<string, vector<int>> wpos;
@@ -22,14 +23,14 @@ void previous(const string& w) {
   }
 }
 
-void donext(const string& w) {
+void next(const string& w) {
   static set<string> Done;
   if (Done.count(w)) return;
   Done.insert(w);
   for (auto i : wpos[w]) {
     if (period[i] || comma[i]) continue;
     comma[i] = true;
-    if (i+1 < text.size()) prev(text[i+1]);
+    if (i+1 < text.size()) previous(text[i+1]);
   }
 }
 
@@ -43,8 +44,8 @@ int main() {
     text.push_back(s);
   }
   for (int i = 0; i < text.size(); i++) if (comma[i]) {
-    donext(text[i]);
-    if (i+1 < text.size()) doprev(text[i+1]);
+    next(text[i]);
+    if (i+1 < text.size()) previous(text[i+1]);
   }
   for (int i = 0; i < text.size(); i++) {
     if (i) cout << ' ';
